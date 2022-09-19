@@ -1,0 +1,78 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}{{title}}{% endblock %}
+
+{% block head %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+
+{% endblock%}
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+
+{% block content %}
+    <h3>Добавление документа</h3>
+    <div class="">
+            <form method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+                    <div class="form-row">{{form.number|as_crispy_field}} <br>
+                    </div>
+                <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">{{form.datetime|as_crispy_field}} <br></div>
+                        <div class="form-group col-md-3 mb-0">{{form.holding|as_crispy_field}} <br></div>
+                        <div class="form-group col-md-5 mb-0">{{form.contragent|as_crispy_field}}</div>
+                        <div class="form-group col-md-3 mb-0">{{form.move|as_crispy_field}}</div>
+                </div>
+                {{ doc_form.management_form }}
+                {{ doc_form.non_form_errors }}
+
+                <fieldset class="">
+
+                    <div class=table-responsive" id="form_set">
+                        <table class ="table table-sm">
+                            <thead>
+                            <tr>
+                                <th class="col-3">Наименование</th>
+                                <th class="col-1">Значение</th>
+                                <th class="col-1">Единица измерения</th>
+                            </tr>
+                            </thead>
+
+                            {% for item in doc_form %}
+                                <div>
+                                    <tr>
+                                        <td>{{item.receipt|as_crispy_field}}</td>
+                                        <td>{{item.value|as_crispy_field}}</td>
+                                        <td>{{item.unit|as_crispy_field}}</td>
+                                    </tr>
+                                </div>
+                            {% endfor %}
+
+                        </table>
+                    </div>
+
+                </fieldset>
+
+<!--                <input class="btn btn-secondary float-end" type="button" value="Добавить строку" id="add_more">-->
+                <button class="btn btn-primary" type="submit" name="submit">Создать документ</button>
+            </form>
+
+        <!--</div>-->
+    </div>
+{% endblock %}
+
+{% block footer %}
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

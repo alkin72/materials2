@@ -1,0 +1,119 @@
+
+<!doctype html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+    {% block head %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+    <header>
+        <div class="d-flex justify-content-start sticky-top mobile-menu-header">
+            <img id="img" src="{% static 'main/img/logo72.png' %}"  alt="Лого">
+                <span class="logo" id="logo">материалы</span>
+                    <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                        <div class="btn-group">
+                                <button type="button" class="btn btn-outline dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Работа с документами
+                                </button>
+                                <ul class="dropdown-menu">
+                                <li class="dropdown-item"><a class="me-3 py-2 text-dark text-decoration-none"
+                                    {% if True %}
+                                    href="{% url 'create_detail' %}"
+                                    {% endif %}>
+                                    Документ учета приход-расход</a>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'create_detail_receipt' %}">Документ производство рецепт</a></li>
+                                <li><a class="dropdown-item" href="#">Документ работы</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'delete_objects' %}">Удаление помеченных документов</a></li>
+                                <li><a class="dropdown-item" href="{% url 'delete_receipt' %}">Удаление помеченных заявок</a></li>
+                                </ul>
+                        </div>
+<!--                        <div class="btn-group">-->
+<!--                            <button type="button" class="btn btn-online dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                                Сервис-->
+<!--                            </button>-->
+<!--                            <ul class=" dropdown-menu">-->
+<!--                            <li class="dropdown-item"><a class="me-3 py-2 text-dark text-decoration-none" href="#">Удаление помеченных документов</a></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Сохранить</a>
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Просмотр</a>
+                        {% if not request.user.is_authenticated %}
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'register' %}">Регистрация</a>
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'login' %}">Вход</a>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <a class="me-3 py-2 text-success text-decoration-none text-uppercase" href="#">   {{ user.username }} </a>
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'logout' %}">Выход</a>
+                        {% endif %}
+                    </nav>
+        </div>
+        <div class="d-flex justify-content-end sticky-top mobile-menu-header">
+
+        </div>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <!--Вставка бокового меню-->
+            <div class="col-sm-5 col-md-4 col-lg-3 col-xl-2 col-xxl-2 col-6">
+                <aside>
+                    <ul>
+                        <a href="{% url 'home' %}"><li><i class="fas fa-home"></i> Главная</li></a>
+                        <a href="{% url 'directory' %}"><li><i class="fas fa-book"></i> Справочники</li></a>
+                        <a href="{% url 'docs_journal' %}"><li><i class="fas fa-file"></i> Движение материалов</li></a>
+                        <a href="{% url 'application_journal' %}"><li><i class="fas fa-file"></i> Заявки производство</li></a>
+                        <a href="#"><li><i class="fas fa-file"></i> Документы работы</li></a>
+                        <a href=" {% url 'reports_journal' %}"><li><i class="fas fa-file-alt"></i> Отчеты</li></a>
+                        <a href="{% url 'about' %}"><li><i class="fas fa-id-card"></i> Контакты</li></a>
+                    </ul>
+                </aside>
+            </div>
+            <!--Конец бокового меню-->
+
+            <!--Основная страница-->
+            <div id="main" class="col-md-7 col-11 col-xl-9 col-sm-6">
+                <div class="">
+                    <div class="row">
+                           {% block cap %} {% endblock %}
+                    </div>
+    
+                    <div class="content">
+                        {% block content %} {% endblock %}
+                    </div>
+
+                    <div class="">
+                        <div id="main_footer">
+                    <!--footer-->
+                        <div>
+                            <footer class="">
+                                {% block footer %} {% endblock %}
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <!--конец footer-->
+{% block script %}
+
+{% endblock %}
+</body>
+
+</html>

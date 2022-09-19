@@ -1,0 +1,47 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyAttributeOutsideInitInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyMethodOverridingInspection" enabled="true" level="INFORMATION" enabled_by_default="true" editorAttributes="INFORMATION_ATTRIBUTES" />
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="W292" />
+          <option value="E117" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="materials.directory.models.Receipt.objects" />
+          <option value="materials.directory.models.ReceiptDetail.objects" />
+          <option value="materials.directory.models.RegisterReceipt.objects" />
+          <option value="materials.directory.models.RegisterReceiptComposition.objects" />
+          <option value="materials.directory.utils.Move.date" />
+          <option value="calendar.calendar.monthrange" />
+          <option value="materials.docs.models.RegisterMaterialsRemainder.objects" />
+          <option value="materials.directory.utils.docs" />
+          <option value="docs.models.Coeficient.objects" />
+          <option value="docs.models.Unit.objects" />
+          <option value="docs.models.Receipt.objects" />
+          <option value="docs.models.Contragents.objects" />
+          <option value="docs.models.Materials.objects" />
+          <option value="docs.models.Category.objects" />
+          <option value="docs.models.ReceiptDetail.objects" />
+          <option value="docs.models.RegisterReceipt.objects" />
+          <option value="docs.models.RegisterReceiptComposition.objects" />
+          <option value="docs.models.RegisterMaterialsRemainder.objects" />
+          <option value="docs.models.DocumentReceipt.objects" />
+          <option value="docs.models.DocumentReceiptRef.objects" />
+          <option value="docs.models.RelationDocIdReceipt.objects" />
+          <option value="docs.models.RelationDoc.objects" />
+          <option value="django.redirect" />
+          <option value="directory.models.RegisterReceipt.objects" />
+          <option value="directory.models.RegisterReceiptComposition.objects" />
+          <option value="directory.models.ReceiptDetail.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

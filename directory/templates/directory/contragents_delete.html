@@ -1,0 +1,47 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% load rest_framework %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+
+{% endblock%}
+{% block cap %}
+<h2>Контрагент удаление</h2>
+{% endblock %}
+
+{% block content %}
+<p>
+<h3>
+    {{ object.name }}
+    {{ name }}
+</h3>
+<form action="" method="post">
+        {%csrf_token%}
+    <div class="buttonHolder">
+        <input type="submit" name="submit" value="Удалить контрагента" class="btn btn-primary submit submitButton" id="submit-id-submit" />
+    </div>
+    </form>
+{{ e }}
+{% endblock %}
+
+{% block footer %}
+<div class="row">{% include 'directory/messages.html' %}</div>
+
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        setTimeout(function(){
+          if ($('#msg').length > 0) {
+            $('#msg').remove();
+          }
+        }, 10000)
+    </script>
+{% endblock %}

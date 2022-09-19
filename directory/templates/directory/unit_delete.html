@@ -1,0 +1,41 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+{% load crispy_forms_tags %}
+
+{% load rest_framework %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+
+{% endblock%}
+{% block cap %}
+<h2>Единица измерения удаление</h2>
+{% endblock %}
+
+{% block content %}
+<p>
+<h3>
+    {{ object.name }}
+    {{ name }}
+</h3>
+<form action="" method="post">
+        {%csrf_token%}
+    <div class="buttonHolder">
+        <input type="submit" name="submit" value="Удалить единицу измерения" class="btn btn-primary submit submitButton" id="submit-id-submit" />
+    </div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+<div class="row">{% include 'directory/messages.html' %}</div>
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}

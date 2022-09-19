@@ -1,0 +1,116 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+<h2>Документ № {{ docs_detail.number }} {% if docs_detail.move %}
+    <span class="small text-success"> проведен</span> {% else %} <span class="small text-danger"> не проведен </span> {% endif %}</h2>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+                <div>
+                    <h5>{% if docs_detail.isdelete %}<span class="small text-danger">документ помечен на удаление</span> {% else %}{% endif %}</h5>
+                </div>
+
+            <div class="row">
+                    <input class="form-control" type="text" value="{{ docs_detail.doc_id }}" name="doc_id" hidden><br>
+                <div class="col"><label for="doc_date">Дата</label>
+                    <input class="form-control" type="text" value="{{ docs_detail.datetime }}" id="doc_date" disabled><br>
+                </div>
+                <div class="col"><label for="number">Номер</label>
+                        <input class="form-control" type="text" value="{{ docs_detail.number }}" id="number" disabled><br>
+                </div>
+                <div class="col"><label for="contragent">Контрагент</label>
+                    <input class="form-control" type="text" value="{{ docs_detail.contragent.name }}" id="contragent" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"><label for="holding">Пользователь</label>
+                    <input class="form-control" type="text" value="{{ docs_detail.holding.username }}" id="holding" disabled><br>
+                </div>
+                <div class="col"><label for="category_move">Тип движения</label>
+                    <input class="form-control" type="text"
+                    {% if docs_detail.category_move %} value="Приход" {% else %} value="Расход" {% endif %} id="category_move" disabled><br>
+                </div>
+<!--                <br>-->
+<!--                <div class="col"><label for="is_del">{% if docs_detail.isdelete %} Документ помечен на удаление {% endif %}</label>-->
+<!--            <input class="form-control" type="text" {% if docs_detail.isdelete %} value="Документ помечен на удаление" {% endif %}-->
+<!--            id="is_del" disabled><br>-->
+            </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead>
+                <tr>
+                    <th>№п.п.</th>
+                    <th>наименование номенклатуры</th>
+                    <th>количество</th>
+                    <th>Ед. изм.</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {% for i in docs_detail.docs_set.all %}
+                    <tr>
+                        <td></td>
+                        <td>{{i.materials.name}}</td>
+                        <td>{{i.value}}</td>
+                        <td>{{i.unit.name}}</td>
+                    </tr>
+            {% endfor %}
+                </tbody>
+           <tfoot>
+           </tfoot>
+            </table>
+            {% if docs_detail.move %}
+            <a class="btn btn-primary" href="{% url 'upd_doc' docs_detail.doc_id %}" hidden>Редактировать документ</a>
+            <span class="text-danger">Для редактирования документа отмените проводку!</span>
+            {% else %}
+            <a class="btn btn-primary" href="{% url 'upd_doc' docs_detail.doc_id %}">Редактировать документ</a>
+            {% endif %}
+            {% if not docs_detail.isdelete %}
+            <button class="btn btn-success float-end" type="submit" name="move" >
+                {% if docs_detail.move %} Отменить проводку {% else %} Провести {% endif %}</button>
+            {% endif %}
+        </div>
+            <div class="row">
+                <div class="col"><label for="note">Примечание</label>
+                   <input class="form-control" type="textarea" value="{{ docs_detail.note }}" id="note"><br>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$('.table tbody tr').each(function(i) {
+var number = i + 1;
+$(this).find('td:first').text(number+".");
+});
+</script>
+<!--<script>-->
+<!--   function add_row(){-->
+<!--      var table = document.getElementById("body");-->
+<!--      var row = table.insertRow(table.rows + 1);-->
+<!--      var cell = row.insertCell(0);-->
+<!--      var combo1 = document.createElement("select");-->
+<!--      var option;-->
+<!--      {% for opt in options_all %}-->
+<!--          option = document.createElement("option");-->
+<!--          option.setAttribute("value", "{{ opt.id }}");-->
+<!--          option.text="{{ opt.description }}";-->
+<!--          combo1.add(opcion);-->
+<!--      {% endfor %}-->
+<!--      cell.appendChild(combo1);-->
+<!--   }-->
+<!--    </script>-->
+{% endblock %}

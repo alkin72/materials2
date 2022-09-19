@@ -1,0 +1,22 @@
+{% extends 'main/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Выход {% endblock %}
+
+{% block content %}
+    <h2>Выход пользователя</h2>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            <div class="form-row">
+                <div class="form-group col-md-3 mb-0">
+                  {{ form|crispy }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
+
+    </div>
+{% endblock %}

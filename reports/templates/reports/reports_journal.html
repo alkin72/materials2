@@ -1,0 +1,48 @@
+
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'reports/css/reports.css' %}">
+{% endblock %}
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+
+    <h2> {{ title }} </h2>
+{% endblock %}
+
+
+{% block content %}
+
+     <div class="">
+         <p class="fs-4">Отчеты по материалам</p>
+        <div id="main" class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom" >
+            <a class="btn btn-outline-primary btn-block"  href="{% url 'came' %}"><img width="96" src=""/>Отчет по приходу материала </a>
+            <a class="btn btn-outline-primary btn-block"  href="{% url 'expense' %}"><img width="96" src=""/>Отчет по расходу материала</a>
+            <a class="btn btn-outline-primary btn-block"  href="#"><img width="96" src=""/>Отчет по расчетам списания по рецептам</a>
+            <a class="btn btn-outline-primary btn-block"  href="{% url 'remainder' %}"><img width="96" src=""/>Отчет по остаткам</a>
+        </div>
+         <p class="fs-4">Отчеты по рецептам</p>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="btn btn-outline-secondary btn-block"  href="#"><img width="96" src=""/>Отчет по заказам </a>
+            <a class="btn btn-outline-secondary btn-block"  href="#"><img width="96" src=""/>Отчет по заказам по контрагентам </a>
+            <a class="btn btn-outline-secondary btn-block"  href="#"><img width="96" src=""/>Отчет по заказам по датам </a>
+        </div>
+         <p class="fs-4">Отчеты по работам</p>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="btn btn-outline-success btn-block"  href="#"><img  width="96" src=""/> Работы выполненные</a>
+            <a class="btn btn-outline-success btn-block"  href="#"><img  width="96" src=""/> Работы</a>
+        </div>
+         <p class="fs-4">Отчеты по персоналу</p>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="btn btn-outline-warning btn-block"  href="#"><img width="96" src=""/> Сотрудники</a>
+            <a class="btn btn-outline-warning btn-block"  href="#"><img width="96" src=""/> Табель</a>
+            <a class="btn btn-outline-warning btn-block"  href="#"><img width="96" src=""/> Зарплаты</a>
+        </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли как - &nbsp  <p class="text-uppercase"> {{ user.username }} </p> </p>
+{% endblock %}

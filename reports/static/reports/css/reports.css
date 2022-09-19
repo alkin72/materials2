@@ -1,0 +1,7 @@
+.td_table {
+    cursor: pointer;
+}
+.block_button {
+    min-width: 120px;
+    max-width: 120px;
+}

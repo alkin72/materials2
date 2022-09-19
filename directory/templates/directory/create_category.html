@@ -1,0 +1,44 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block head %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+
+{% endblock%}
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+
+{% block content %}
+    <h3>Добавление категории</h3>
+
+    <form action="" method="post">
+        {%csrf_token%}
+        <div class="form-group row">
+            <div class="form-group col-md-2 mb-0">{{ form.name|as_crispy_field }}</div>
+            <div class="form-group col-md-10 mb-0">{{ form.value|as_crispy_field }}</div>
+        </div>
+    <div class="form-group row">
+            <div class="form-group col-md-12 mb-0">{{ form.note|as_crispy_field }}</div>
+    </div>
+    <div class="buttonHolder">
+        <input type="submit" name="submit" value="Сохранить категорию" class="btn btn-primary submit submitButton" id="submit-id-submit" />
+    </div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

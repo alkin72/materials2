@@ -1,0 +1,72 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.bootstrap5.min.css">
+<link rel="stylesheet" href="{% static 'directory/css/directory.css' %}">
+{% endblock %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+{% block content %}
+
+<div><a class="btn btn-primary btn-block" href="{% url 'create_contragents' %}">Создать контрагента</a></div>
+<br>
+<div class="table-responsive">
+    <table class="table table-bordered table-sm" id="dt-table" data-page-length="25">
+        <thead class="table-light">
+        <tr class="text-left">
+            <th hidden></th>
+            <th>наименование</th>
+            <th>полное наименование</th>
+            <th>адрес</th>
+            <th>телефон</th>
+            <th>e-mail</th>
+            <th>примечание</th>
+            <th>изменить</th>
+            <th>удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for el in contr %}
+        <tr>
+                <td class="td_table" hidden>{{ el.contragents_id }}</td>
+                <td class="td_table">{{ el.name }}</td>
+                <td class="td_table">{{ el.fullname }}</td>
+                <td class="td_table">{{ el.address }}</td>
+                <td class="td_table">{{ el.phone }}</td>
+                <td class="td_table">{{ el.e_mail }}</td>
+                <td class="td_table">{{ el.note }}</td>
+                <td class="td_table"><a href="{% url 'contragents_detail' el.contragents_id %}" class="btn btn-outline-primary btn-sm">Изменить</a></td>
+                <td class="td_table"><a href="{% url 'contragents_delete' el.contragents_id %}" class="btn btn-outline-primary btn-sm">Удалить</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block footer %}
+   <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли под - &nbsp  <p class="text-uppercase"> {{ user.username }} &nbsp </p> </p>
+    <div class="row">{% include 'directory/messages.html' %}</div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'docs/js/datatable.js' %}"></script>
+    <script src="{% static 'docs/js/row_higlight.js'%}"></script>
+    <script>
+        setTimeout(function(){
+          if ($('#msg').length > 0) {
+            $('#msg').remove();
+          }
+        }, 10000)
+    </script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block head %}
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.js"></script>
+{% endblock%}
+
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+
+{% block content %}
+
+{% verbatim %}
+
+<div class="table-responsive" id="doc_id">
+    <div class="col" v-for="doc in docs">
+        Номер: {{ doc.number }}
+        Дата: {{ doc.datetime }}
+        Примечание: {{ doc.note }}
+        Контрагент: {{ doc.contragent.name }}
+        <br>
+
+        <div class="" v-for="set in doc.docs_set">
+            {{set.materials.name}}
+            {{set.value}}
+            {{set.unit.name}}
+        </div>
+    </div>
+</div>
+
+{% endverbatim %}
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block script %}
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.27/vue.cjs.js"></script>-->
+
+<script src="{% static 'docs/js/docs.js' %}"></script>
+{% endblock %}

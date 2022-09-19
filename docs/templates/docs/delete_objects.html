@@ -1,0 +1,43 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.bootstrap5.min.css">
+    <link rel="stylesheet" href="{% static 'docs/css/docs.css' %}">
+{% endblock %}
+
+
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+
+{% block content %}
+    <h3><p class="">Документов для удаления: - {{ delete_object.count }}</p></h3>
+    {% for i in delete_object %}
+        <span class="">Документ № {{ i }} от {{ i.datetime }}</span><br>
+    {% endfor %}
+<br>
+Удалить выбранные документы?
+<form method="post">
+    {% csrf_token %}
+<button class="btn btn-primary" type="submit" name="delete">Удалить</button>
+<button class="btn btn-primary" type="submit" name="cancel">Не удалять</button>
+</form>
+{% endblock %}
+
+{% block footer %}
+<br>
+   <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли как - &nbsp  <p class="text-uppercase"> {{ user.username }} </p> </p>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'docs/js/datatable.js' %}"></script>
+<!--    <script src="{% static 'docs/js/row_higlight.js'%}"></script>-->
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.bootstrap5.min.css">
+    <link rel="stylesheet" href="{% static 'docs/css/docs.css' %}">
+{% endblock %}
+
+
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+
+{% block content %}
+<div class="table-responsive">
+<!--    class="table-responsive"-->
+    <table class="display nowrap table table-md row-border hover compact stripe" width="100%" id="dt-table" data-page-length="50">
+<!-- class="table table-striped table-bordered docs_table"-->
+        <thead class="table-light">
+        <tr class="text-left">
+            <th  width="0%" hidden></th>
+            <th width="1%">№ Док.</th>
+            <th width="29%">Дата</th>
+            <th width="15%">Контрагент</th>
+            <th width="5%" class="text-center">Проведен</th>
+            <th width="10%">Движение</th>
+            <th width="20%">Прим.</th>
+            <th width="10%">На удаление</th>
+            <th width="10%">Действие</thwidth>
+        </tr>
+        </thead>
+        <tbody>
+        {% for el in docs %}
+        <tr>
+                <td class="td_table" hidden>{{ el.doc_id }}</td>
+                <td class="td_table">{{ el.number }}</td>
+                <td class="td_table">{{ el.datetime }}</td>
+                <td class="td_table">{{ el.contragent.name }}</td>
+                {% if el.move %}
+                    <td class="td_table" align="center"><input class="form-check-input" type="checkbox" checked disabled></td>
+                {% else %}
+                    <td class="td_table" align="center"><input class="form-check-input" type="checkbox" disabled></td>
+                {% endif %}
+                {% if el.category_move %}
+                    <td class="td_table" class="text-success"> Приход </td>
+                {% else %}
+                    <td class="text-danger td_table"> Расход </td>
+                {% endif %}
+                {% if el.note %}
+                 <td class="td_table">{{ el.note }}</td>
+                {% else %}
+                <td class="td_table"></td>
+                {% endif %}
+                {% if el.isdelete %}
+                    <td class="td_table" align="center"><input class="form-check-input" type="checkbox" checked disabled></td>
+                {% else %}
+                    <td class="td_table" align="center"><input class="form-check-input" type="checkbox" disabled></td>
+                {% endif %}
+                <td class="td_table"><a href="{% url 'docs_detail' el.doc_id %}" class="btn btn-outline-primary btn-sm">Детальнее</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>№ Документа</th>
+            <th>Дата</th>
+            <th>Контрагент</th>
+            <th class="text-center">Проведен</th>
+            <th>Движение</th>
+            <th>Примечание</th>
+            <th width="9%">На удаление</th>
+            <th>Действие</th>
+        </tr>
+        </tfoot>
+    </table>
+<!--    <form action="" method="post">-->
+<!--        <input name="submit_number" type="text">-->
+<!--    </form>-->
+</div>
+{% endblock %}
+
+{% block footer %}
+   <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли как - &nbsp  <p class="text-uppercase"> {{ user.username }} </p> </p>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'docs/js/datatable.js' %}"></script>
+    <script src="{% static 'docs/js/row_higlight.js'%}"></script>
+{% endblock %}
+

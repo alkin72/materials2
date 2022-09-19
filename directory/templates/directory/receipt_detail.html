@@ -1,0 +1,72 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% load rest_framework %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+
+{% endblock%}
+{% block cap %}
+<h2>Рецепт редактирование</h2>
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post">
+        {%csrf_token%}
+        <div class="form-group row">
+            <div class="form-group col-md-5 mb-0">{{ form.name|as_crispy_field }}</div>
+            <div class="form-group col-md-3 mb-0">{{ form.date|as_crispy_field }}</div>
+            <div class="form-group col-md-3 mb-0">{{ form.note|as_crispy_field }}</div>
+        </div>
+    {{ doc_form.management_form }}
+    {{ doc_form.non_form_errors }}
+    <input type="text" name="raschet" value="0" hidden>
+                <fieldset>
+                    <div class=table-responsive" id="form_set">
+                        <table class ="table table-sm">
+                            <thead>
+                            <tr>
+                                <th class="col-1" style="display:none">id</th>
+                                <th class="col-8 title_row">Материал</th>
+                                <th class="col-3 title_row">Значение в % в сумме 100!</th>
+                                <th class="col-4 title_row">Удалить</th>
+                            </tr>
+                            </thead>
+                            {% for item in doc_form %}
+                                <div>
+                                    <tr>
+                                        <td style="display:none">{{item.receipt_detail_id|as_crispy_field}}</td>
+                                        <td>{{item.materials|as_crispy_field}}</td>
+                                        <td class="val">{{item.value|as_crispy_field}}</td>
+                                        {% if doc_form.can_delete %}
+                                            <td class="text-center">{{ item.DELETE }}</td>
+                                        {% endif %}
+                                    </tr>
+                                </div>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </fieldset>
+
+    <div class="buttonHolder">
+        <input type="submit" name="submit" value="Сохранить рецепт" class="btn btn-primary submit submitButton" id="submit-id-submit" />
+    </div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<script>
+
+</script>
+{% endblock %}

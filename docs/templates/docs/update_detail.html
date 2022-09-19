@@ -1,0 +1,64 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% load rest_framework %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+
+{% endblock%}
+
+{% block cap %}
+    <h2>{{title}}</h2>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+    {%csrf_token%}
+    {{doc.number}}
+    <div class="form-row">
+        {%render_form serializer%}
+<!--        {% render_field serializer.datetime style=style %}-->
+<!--        {% render_field serializer.holding.username style=style %}-->
+    </div>
+<!--    <div class="row">-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.datetime}}"></div>-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.holding.username}}"></div>-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.note}}"></div>-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.category_move}}"></div>-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.move}}"></div>-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.contragent.name}}"></div>-->
+<!--        <div class="col"><input class="form-control" type="text" name="" value="{{doc.docs}}"></div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <div class="col">-->
+<!--            {% for i in doc.docs_set.all %}-->
+<!--            <input class="form-control" type="text" value="{{i.materials}}">-->
+<!--            <input class="form-control" type="text" value="{{i.value}}">-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--    </div>-->
+</form>
+
+{% verbatim %}
+
+<div class="form-row" id="doc_id">
+
+</div>
+
+{% endverbatim %}
+
+{% endblock %}
+
+{% block footer %}
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+    <div class="row">
+        <div class="col-5"><h2>Заявка № {{ docs_detail_receipt.number }} {% if docs_detail_receipt.move %}
+            <span class="small text-success"> проведена</span> {% else %} <span class="small text-danger"> не проведена</span> {% endif %}</h2>
+        </div>
+        <div class="col-8"><span class="text-success fw-bolder"> {{ message }}</span></div>
+        <div class="col-8"><span class="text-danger fw-bolder"> {{ message_rel }}</span></div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+                    <h5>{% if docs_detail_receipt.isdelete %}<span class="small text-danger">документ помечен на удаление</span> {% endif %}</h5>
+
+            <div class="row">
+                    <input class="form-control" type="text" value="{{ docs_detail_receipt.doc_id }}" name="doc_id" hidden><br>
+                <div class="col"><label for="doc_date">Дата</label>
+                    <input class="form-control" type="text" value="{{ docs_detail_receipt.datetime }}" id="doc_date" disabled><br>
+                </div>
+                <div class="col"><label for="number">Номер</label>
+                        <input class="form-control" type="text" value="{{ docs_detail_receipt.number }}" id="number" disabled><br>
+                </div>
+                <div class="col"><label for="contragent">Контрагент</label>
+                    <input class="form-control" type="text" value="{{ docs_detail_receipt.contragent.name }}" id="contragent" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"><label for="holding">Пользователь</label>
+                    <input class="form-control" type="text" value="{{ docs_detail_receipt.holding.username }}" id="holding" disabled><br>
+                </div>
+
+<!--                <br>-->
+<!--                <div class="col"><label for="is_del">{% if docs_detail.isdelete %} Документ помечен на удаление {% endif %}</label>-->
+<!--            <input class="form-control" type="text" {% if docs_detail.isdelete %} value="Документ помечен на удаление" {% endif %}-->
+<!--            id="is_del" disabled><br>-->
+            </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead>
+                <tr>
+                    <th>№п.п.</th>
+                    <th>наименование рецепта</th>
+                    <th>количество</th>
+                    <th>Ед. изм.</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {% for i in docs_detail_receipt.docs_receipt_set.all %}
+                    <tr>
+                        <td></td>
+                        <td>{{i.receipt.name}}</td>
+                        <td>{{i.value}}</td>
+                        <td>{{i.unit.name}}</td>
+                    </tr>
+            {% endfor %}
+                </tbody>
+           <tfoot>
+           </tfoot>
+            </table>
+            {% if docs_detail_receipt.move %}
+            <span class="text-danger">Для редактирования заявки отмените проводку!</span>
+            <button class="btn btn-success float-end" name="un_move" type="submit">Отмена расчета</button>
+<!--            <a class="btn btn-success float-end" href="">Отмена проводки</a>-->
+            {% else %}
+            <a class="btn btn-primary" href="{% url 'upd_doc_receipt' docs_detail_receipt.doc_receipt_id %}">Редактировать заявку</a>
+<!--            <button class="btn btn-success float-end" name="edit" type="submit">Расчет</button>-->
+
+
+            {% endif %}
+            {% if booling and not docs_detail_receipt.isdelete %}
+                <a class="btn btn-success float-end" href="{% url 'create_detail_receipt_move' docs_detail_receipt.doc_receipt_id  %}">Расчет и списание</a>
+            {% else %}
+            {% endif %}
+<!--            <button class="btn btn-success float-end" type="submit" name="move"> {% if docs_detail_receipt.move %} Отменить расчет и списание {% else %}-->
+<!--                Расчет и списание-->
+<!--                {% endif %}</button>-->
+        </div>
+            <div class="row">
+                <div class="col"><label for="note">Примечание</label>
+                   <input class="form-control" type="textarea" value="{{ docs_detail_receipt.note }}" id="note"><br>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+<!-- {{ system_info }}-->
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$('.table tbody tr').each(function(i) {
+var number = i + 1;
+$(this).find('td:first').text(number+".");
+});
+</script>
+<!--<script>-->
+<!--   function add_row(){-->
+<!--      var table = document.getElementById("body");-->
+<!--      var row = table.insertRow(table.rows + 1);-->
+<!--      var cell = row.insertCell(0);-->
+<!--      var combo1 = document.createElement("select");-->
+<!--      var option;-->
+<!--      {% for opt in options_all %}-->
+<!--          option = document.createElement("option");-->
+<!--          option.setAttribute("value", "{{ opt.id }}");-->
+<!--          option.text="{{ opt.description }}";-->
+<!--          combo1.add(opcion);-->
+<!--      {% endfor %}-->
+<!--      cell.appendChild(combo1);-->
+<!--   }-->
+<!--    </script>-->
+{% endblock %}

@@ -1,0 +1,55 @@
+
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'directory/css/directory.css' %}">
+{% endblock %}
+{% block title %}{{title}}{% endblock %}
+
+{% block cap %}
+
+    <h2> {{ title }} </h2>
+{% endblock %}
+
+{% block content %}
+
+     <div class="">
+         <p class="fs-4">Учет материалов</p>
+        <div id="main" class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom" >
+            <a class="btn btn-outline-primary btn-block"  href="{% url 'contragents' %}"><img width="96" src="https://img.icons8.com/ios/96/000000/supplier.png"/>
+                Контрагенты </a>
+            <a class="btn btn-outline-warning btn-block"  href="{% url 'materials' %}"><img width="96"
+                                                                                        src="https://img.icons8.com/ios/96/000000/delivery--v1.png"/> Материалы </a>
+            <a class="btn btn-outline-warning btn-block"  href="{% url 'category' %}"><img width="96" src="https://img.icons8.com/ios/100/000000/rock.png"/>
+                Категории материалов
+            </a>
+            <a class="btn btn-outline-info btn-block"  href="{% url 'unit' %}"><img width="96"
+                                                                                 src="https://img.icons8.com/material-outlined/96/000000/not-applicable.png"/>
+                Единицы
+                измерения </a>
+        </div>
+         <p class="fs-4">Рецепты</p>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="btn btn-outline-danger btn-block"  href="{% url 'coeficient' %}"><img width="96" src="https://img.icons8.com/ios/100/000000/math.png"/>
+                Коэффициеты расчета </a>
+            <a class="btn btn-outline-dark btn-block"  href="{% url 'receipt' %}"><img width="96" src="https://img.icons8.com/ios/100/000000/add-receipt.png"/>
+                Рецепты </a>
+        </div>
+         <p class="fs-4">Работы</p>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="btn btn-outline-success btn-block"  href="#"><img  width="96" src="https://img.icons8.com/ios/100/000000/work.png"/> Работы </a>
+            <a class="btn btn-outline-secondary btn-block"  href="#"><img  width="96" src="https://img.icons8.com/ios/100/000000/wrench--v1.png"/> Категории работ </a>
+        </div>
+         <p class="fs-4">Персонал</p>
+        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+            <a class="btn btn-outline-primary btn-block"  href="#"><img width="96" src="https://img.icons8.com/ios/100/000000/worker-male.png"/> Сотрудники </a>
+            <a class="btn btn-outline-success btn-block"  href="#"><img width="96" src="https://img.icons8.com/ios/100/000000/facilitator.png"/> Должности </a>
+            <a class="btn btn-outline-secondary btn-block"  href="#"><img width="96" src="https://img.icons8.com/ios/96/000000/salary-male.png"/> Оклады </a>
+        </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли как - &nbsp  <p class="text-uppercase"> {{ user.username }} </p> </p>
+{% endblock %}
