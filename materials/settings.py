@@ -196,7 +196,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # SIMPLE_JWT = {
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=300),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
