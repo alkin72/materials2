@@ -19,7 +19,7 @@ def getpdf(request):
     return response
 
 
-@ login_required()
+# @ login_required()
 def reports_journal(request):
     rem = RegisterMaterialsMove.objects.all()
     data = {'title': 'Журнал Отчетов',

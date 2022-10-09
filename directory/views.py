@@ -10,7 +10,7 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 
 
-@ login_required()
+# @ login_required()
 def directory(request):
     data = {'title': 'Справочники',
             'system_info': 'Дата создания: 25.12.2021 12:00, Контрагент: ООО "", Создан'
