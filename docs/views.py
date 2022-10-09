@@ -238,7 +238,7 @@ class DocumentCreateView(CreateView):
     template_name = 'docs/create_detail.html'
     context_object_name = 'create_detail'
 
-    @method_decorator(login_required)
+   # @method_decorator(login_required)
     def get(self, request, pk=None, *args, **kwargs):
         if pk == None:
             self.object = None
@@ -368,7 +368,7 @@ class DocumentReceiptCreateView(CreateView):
     template_name = 'docs/create_detail_receipt.html'
     context_object_name = 'create_detail_receipt'
 
-    @method_decorator(login_required)
+   # @method_decorator(login_required)
     def get(self, request, pk=None, *args, **kwargs):
         if pk == None:
             self.object = None
@@ -425,7 +425,7 @@ class DocumentReceiptCreateView(CreateView):
 
 
 # журнал документов==============================================================
-@login_required()
+# @login_required()
 def docs_journal(request):
     docs = forms.Document.objects.all()
 
@@ -439,7 +439,7 @@ def docs_journal(request):
 
 
 # журнал заявок==============================================================
-@ login_required()
+# @ login_required()
 def application_journal(request):
     docs = forms.DocumentReceipt.objects.all()
 
@@ -452,7 +452,7 @@ def application_journal(request):
 
 
 # удаление помеченных объектов==============================================
-@ login_required()
+# @ login_required()
 def delete_objects(request):
     delete_docs = forms.Document.objects.filter(isdelete=True)
     docs = forms.Document.objects.all()
@@ -471,7 +471,7 @@ def delete_objects(request):
 
 
 # удаление помеченных объектов==============================================
-@ login_required()
+# @ login_required()
 def delete_receipt(request):
     list_rec = []
     delete_docs = forms.DocumentReceipt.objects.filter(isdelete=True)
