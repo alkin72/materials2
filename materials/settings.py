@@ -89,13 +89,24 @@ WSGI_APPLICATION = 'materials.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dbmaterials',
-        'USER': 'postgres',
-        'PASSWORD': 'Kristina247571#',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'ddej299d9qjsv3',
+        'USER': 'oyxlfwmfjooglp',
+        'PASSWORD': '6b8105bbbc0d72d8b1e94c24fbe4737491466c040a2046c9eff0383943412ed4',
+        'HOST': 'ec2-54-220-86-118.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'dbmaterials',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Kristina247571#',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
