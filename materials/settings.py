@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'docs',
     'reports',
     'directory',
+    #'django_heroku',
     'main',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -215,5 +216,5 @@ MESSAGE_TAGS = {
 #     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=300),
 #     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 # }
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())
