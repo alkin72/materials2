@@ -89,7 +89,7 @@ def came(request):
 def remainder(request):
     # ls_1 = RegisterMaterialsRemainder.objects.values('materials').annotate(count=Count('materials')).filter(count__gt=1)
     # ls = RegisterMaterialsRemainder.objects.all().values_list('materials', flat=True).distinct().order_by('materials')
-    rem = RegisterMaterialsRemainder.objects.filter().exclude(value=0).order_by('materials', '-datetime').distinct('materials')
+    rem = RegisterMaterialsRemainder.objects.filter().exclude(value=0).order_by('materials', '-datetime').distinct()#.distinct('materials')
 
     remainder_list = rem
     data = {'title': 'Остатки материала',

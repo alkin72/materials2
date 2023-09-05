@@ -471,7 +471,11 @@ class ReceiptCreateView(CreateView):
     def get_context_data(self, **kwargs):
         """ Add formset and formhelper to the context_data. """
         number_last_object = forms.Document.objects.order_by('number').last()
-        number_last = number_last_object.number + 1
+        if not number_last_object:
+            number_last = 1
+        else:
+            number_last = number_last_object.number + 1
+
         ctx = super(ReceiptCreateView, self).get_context_data(**kwargs)
         doc_formhelper = forms.ReceiptFormHelper()
 

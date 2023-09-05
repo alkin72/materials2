@@ -19,17 +19,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%o!p+4gxlk6ko$j(+5_(2e$90eu_t(x&g4c#^_ue(q4na21$rl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 STATIC_URL = '/static/'
 
 if DEBUG:
-    STATICFILES_DIRS = [BASE_DIR / 'static']
+    # STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 else:
-    #STATIC_ROOT = BASE_DIR / "staticfiles"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 
 ALLOWED_HOSTS = ['appmaterials.herokuapp.com', '127.0.0.1']
 
@@ -67,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'materials.urls'
@@ -92,16 +94,16 @@ WSGI_APPLICATION = 'materials.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ddej299d9qjsv3',
-        'USER': 'oyxlfwmfjooglp',
-        'PASSWORD': '6b8105bbbc0d72d8b1e94c24fbe4737491466c040a2046c9eff0383943412ed4',
-        'HOST': 'ec2-54-220-86-118.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'ddej299d9qjsv3',
+#         'USER': 'oyxlfwmfjooglp',
+#         'PASSWORD': '6b8105bbbc0d72d8b1e94c24fbe4737491466c040a2046c9eff0383943412ed4',
+#         'HOST': 'ec2-54-220-86-118.eu-west-1.compute.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -110,9 +112,15 @@ DATABASES = {
 #         'USER': 'postgres',
 #         'PASSWORD': 'Kristina247571#',
 #         'HOST': 'localhost',
-#         'PORT': '',
+#         'PORT': '5432',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -190,7 +198,10 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+# Enable WhiteNoise's GZip compression of static assets.
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # SIMPLE_JWT = {
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=300),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
