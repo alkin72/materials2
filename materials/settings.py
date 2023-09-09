@@ -32,7 +32,7 @@ else:
 
 
 
-ALLOWED_HOSTS = ['appmaterials.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
