@@ -66,13 +66,11 @@
            <tfoot>
            </tfoot>
             </table>
-            {% if docs_detail_receipt.move %}
+           {% if docs_detail_receipt.move %}
             <span class="text-danger">Для редактирования заявки отмените проводку!</span>
             <button class="btn btn-success float-end" name="un_move" type="submit">Отмена расчета</button>
-<!--            <a class="btn btn-success float-end" href="">Отмена проводки</a>-->
             {% else %}
             <a class="btn btn-primary" href="{% url 'upd_doc_receipt' docs_detail_receipt.doc_receipt_id %}">Редактировать заявку</a>
-<!--            <button class="btn btn-success float-end" name="edit" type="submit">Расчет</button>-->
 
 
             {% endif %}

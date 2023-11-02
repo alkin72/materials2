@@ -72,7 +72,7 @@ class DocFormHelper(FormHelper):
         self.layout = Layout(Fieldset("Добавьте строки данных", 'materials', 'value', 'unit',),)
 
 
-DocumentDetailFormSet = inlineformset_factory(Document, DocumentRef, can_delete=True, fields='__all__', extra=14)
+DocumentDetailFormSet = inlineformset_factory(Document, DocumentRef, can_delete=True, fields='__all__', extra=6)
 
 DocFormSet = inlineformset_factory(Document, DocumentRef, can_delete=True, fields='__all__', extra=2)
 # Форма Документа конец=================================

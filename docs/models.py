@@ -225,7 +225,7 @@ class DocumentReceiptRef(models.Model):
     doc_receipt_ref_id = models.BigAutoField(primary_key=True)
     doc_receipt = models.ForeignKey(DocumentReceipt, models.DO_NOTHING, related_name='docs_receipt_set')
     receipt = models.ForeignKey('Receipt', models.DO_NOTHING,  verbose_name='')
-    value = models.DecimalField(max_digits=8, decimal_places=3,  verbose_name='')
+    value = models.DecimalField(max_digits=9, decimal_places=3,  verbose_name='')
     unit = models.ForeignKey('Unit', models.DO_NOTHING,  verbose_name='')
 
     class Meta:
@@ -238,7 +238,7 @@ class DocumentRef(models.Model):
     doc_ref_id = models.BigAutoField(primary_key=True)
     doc = models.ForeignKey(Document, models.DO_NOTHING, related_name='docs_set')
     materials = models.ForeignKey('Materials', models.DO_NOTHING, verbose_name='')
-    value = models.DecimalField(verbose_name='', max_digits=8, decimal_places=3, blank=True, null=True)
+    value = models.DecimalField(verbose_name='', max_digits=9, decimal_places=3, blank=True, null=True)
     unit = models.ForeignKey('Unit', models.DO_NOTHING, verbose_name='')
 
     class Meta:
@@ -328,7 +328,7 @@ class ReceiptDetail(models.Model):
     receipt_detail_id = models.BigAutoField(primary_key=True)
     receipt = models.ForeignKey(Receipt, on_delete=models.CASCADE)
     materials = models.ForeignKey(Materials, models.DO_NOTHING, verbose_name='')
-    value = models.DecimalField(max_digits=4, decimal_places=2, verbose_name='')
+    value = models.DecimalField(max_digits=6, decimal_places=3, verbose_name='')
 
     class Meta:
         managed = False
@@ -349,7 +349,7 @@ class RegisterMaterialsMove(models.Model):
     objects = None
     register_materials_id = models.BigAutoField(primary_key=True)
     materials = models.ForeignKey(Materials, models.DO_NOTHING)
-    value = models.DecimalField(max_digits=7, decimal_places=3)
+    value = models.DecimalField(max_digits=9, decimal_places=3)
     datetime = models.DateField()
     registrator = models.ForeignKey(Document, models.DO_NOTHING, db_column='registrator')
     move = models.BooleanField()
@@ -364,7 +364,7 @@ class RegisterMaterialsMove(models.Model):
 class RegisterMaterialsRemainder(models.Model):
     register_materials_remainder_id = models.BigAutoField(primary_key=True)
     materials = models.ForeignKey(Materials, models.DO_NOTHING)
-    value = models.DecimalField(max_digits=6, decimal_places=3)
+    value = models.DecimalField(max_digits=9, decimal_places=3)
     datetime = models.DateField()
 
     class Meta:
@@ -387,7 +387,7 @@ class RegisterReceiptComposition(models.Model):
     register_recept_composition_id = models.BigAutoField(primary_key=True)
     register_receipt = models.ForeignKey(RegisterReceipt, models.DO_NOTHING)
     materials = models.ForeignKey(Materials, models.DO_NOTHING)
-    value = models.DecimalField(max_digits=4, decimal_places=2)
+    value = models.DecimalField(max_digits=6, decimal_places=3)
     datetime = models.DateField()
 
     class Meta:

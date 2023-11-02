@@ -26,13 +26,14 @@ STATIC_URL = '/static/'
 if DEBUG:
     # STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 else:
     STATIC_ROOT = BASE_DIR / "staticfiles"
+    #ALLOWED_HOSTS = ['https://matarials.ru/']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
     #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'docs',
     'reports',
     'directory',
-    #'django_heroku',
+    'wkhtmltopdf',
     'main',
     'django.contrib.admin',
     'django.contrib.auth',

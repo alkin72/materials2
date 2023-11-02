@@ -25,9 +25,23 @@ class DocsDetailView(DetailView):
     context_object_name = 'docs_detail'
 
     # permission_classes = [IsAuthenticated, IsAdminUser]
+    def get_context_data(self, **kwargs):
+        doc = forms.Document.objects.get(doc_id=self.kwargs['pk'])
+
+        ctx = super().get_context_data(**kwargs)
+        if doc.move:
+            if RelationDoc.objects.filter(doc=self.kwargs['pk']):
+                rel = RelationDoc.objects.get(doc=self.kwargs['pk'])
+                rec = DocumentReceipt.objects.get(doc_receipt_id=rel.doc_receipt_id)
+                ctx['num_order'] = rec.number
+                ctx['booling'] = True
+            else:
+                ctx['booling'] = False
+        return ctx
 
     def post(self, request, pk=None):
         docs = forms.Document.objects.all()
+       # doc_rel = RelationDoc.objects.get(doc_receipt=self.kwargs['pk'])
         data = {'title': 'Журнал документов',
                 'system_info': 'Дата создания: 25.12.2021 12:00, Контрагент: ООО "", Проведен',
                 'docs': docs,
@@ -45,6 +59,7 @@ class DocsDetailView(DetailView):
             elif 'edit' in request.POST:
 
                 return django.shortcuts.render(request, 'docs/update_detail.html')
+
 # детализация документа=================================
 
 
@@ -431,10 +446,12 @@ class DocumentReceiptCreateView(CreateView):
 # @login_required()
 def docs_journal(request):
     docs = forms.Document.objects.all()
+    rel_doc = RelationDoc.objects.all()
 
     data = {'title': 'Журнал документов',
             'system_info': 'Дата создания: 25.12.2021 12:00, Контрагент: ООО "", Проведен',
             'docs': docs,
+            'rel_doc': rel_doc,
             }
 
     return django.shortcuts.render(request, 'docs/docs_journal.html', data)

@@ -164,7 +164,7 @@ class Move:
         rem = RegisterMaterialsRemainder.objects.filter(datetime__range=[month_next, '3000-01-01']) # получаем все последующие записи
 
         for item in rem:
-            if item.datetime > month:
+            if item.datetime.date() > month:
                 if category:
                     if direction:
                         for i_r in r:

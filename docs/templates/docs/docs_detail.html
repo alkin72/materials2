@@ -67,11 +67,15 @@
             </table>
             {% if docs_detail.move %}
             <a class="btn btn-primary" href="{% url 'upd_doc' docs_detail.doc_id %}" hidden>Редактировать документ</a>
-            <span class="text-danger">Для редактирования документа отмените проводку!</span>
+                {% if not booling %}
+                    <span class="text-danger">Для редактирования документа отмените проводку!</span>
+                {% else %}
+                    <span class="text-danger">Для удаления документа отмените проводку заявки {{ num_order }}!</span>
+                {% endif %}
             {% else %}
             <a class="btn btn-primary" href="{% url 'upd_doc' docs_detail.doc_id %}">Редактировать документ</a>
             {% endif %}
-            {% if not docs_detail.isdelete %}
+            {% if not docs_detail.isdelete and not booling %}
             <button class="btn btn-success float-end" type="submit" name="move" >
                 {% if docs_detail.move %} Отменить проводку {% else %} Провести {% endif %}</button>
             {% endif %}
