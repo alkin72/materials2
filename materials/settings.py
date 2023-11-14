@@ -34,7 +34,6 @@ else:
     #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,7 +44,6 @@ INSTALLED_APPS = [
     'docs',
     'reports',
     'directory',
-    'wkhtmltopdf',
     'main',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,46 +1,76 @@
 from itertools import chain
 from operator import attrgetter
-
 import django
+from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import CameFilterForm
 from docs.models import *
 from django.db.models import Sum, Count
-from django.views.generic.base import View
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import tempfile
 
-from wkhtmltopdf.views import PDFTemplateResponse
+max_data = None
+min_data = None
+contragent_pdf = None
+material = None
+def generate_pdf(request):
+    """Создание pdf."""
+    # Данные модели
+    con = None
+    global material, min_data, max_data, contragent_pdf
+    came = RegisterMaterialsMove.objects.filter(move=True)
+    registrator = Document.objects.filter(category_move=True)
+    material_search = Materials.objects.all()
 
+    form = CameFilterForm(request.POST)
+    if form.is_valid():
+        if min_data:
+            came = came.filter(datetime__gte=min_data)
+        if max_data:
+            came = came.filter(datetime__lte=max_data)
+        if contragent_pdf:
+            registrator = registrator.filter(contragent=contragent_pdf)
+            came = came.filter(registrator__in=registrator)
+        if material:
+            came = came.filter(materials=material)
+        if contragent_pdf:
+            con=contragent_pdf.name
 
+    sum = came.aggregate(Sum=Sum('value'))
+    count = came.count()
+    data = {'title': 'Отчет по приходу материала',
+            'system_info': 'Приход за весь период по датам',
+            'came': came,
+            'form': form,
+            'sum': sum,
+            'count': count,
+            'min_data': min_data,
+            'max_data': max_data,
+            'contragent': con,
+            'material': material
+            }
+    # Обработка шаблона
 
-# def getpdf(request):
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'attachment; filename="file.pdf"'
-#     p = canvas.Canvas(response)
-#     p.setFont("Times-Roman", 55)
-#     p.drawString(100,700, "Hello, Javapoint.")
-#     p.showPage()
-#     p.save()
-#     return response
+    html_string = render_to_string('reports/pdf.html', data)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+    material = None
+    contragent_pdf = None
+    min_data = None
+    max_data = None
+    con = None
 
-class PDFView(View):
-    template = 'reports/came.html'
-
-    def get(self, request):
-        data = {"mydata": "your data"}  # data that has to be renderd to pdf templete
-        response = PDFTemplateResponse(request=request,
-                                       template=self.template,
-                                       filename="hello.pdf",
-                                       context=data,
-                                       show_content_in_browser=False,
-                                       cmd_options={'margin-top': 10,
-                                                    "zoom": 1,
-                                                    "viewport-size": "1366 x 513",
-                                                    'javascript-delay': 1000,
-                                                    'footer-center': '[page]/[topage]',
-                                                    "no-stop-slow-scripts": True},
-                                       )
-        return response
-
+    # Создание http ответа
+    response = HttpResponse(content_type='application/pdf;')
+    response['Content-Disposition'] = 'inline; filename=list_people.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+    return response
 
 # @ login_required()
 def reports_journal(request):
@@ -81,19 +111,24 @@ def expense(request):
 
 
 def came(request):
+    global material, min_data, max_data, contragent_pdf
     came = RegisterMaterialsMove.objects.filter(move=True)
     registrator = Document.objects.filter(category_move=True)
     material_search = Materials.objects.all()
-    form = CameFilterForm(request.GET)
+    form = CameFilterForm(request.POST)
     if form.is_valid():
         if form.cleaned_data['min_data']:
+            min_data = form.cleaned_data['min_data']
             came = came.filter(datetime__gte=form.cleaned_data['min_data'])
         if form.cleaned_data['max_data']:
+            max_data = form.cleaned_data['max_data']
             came = came.filter(datetime__lte=form.cleaned_data['max_data'])
         if form.cleaned_data['contragent']:
+            contragent_pdf = form.cleaned_data['contragent']
             registrator = registrator.filter(contragent=form.cleaned_data['contragent'])
             came = came.filter(registrator__in=registrator)
         if form.cleaned_data['material']:
+            material = form.cleaned_data['material']
             came = came.filter(materials=form.cleaned_data['material'])
 
     sum = came.aggregate(Sum=Sum('value'))
