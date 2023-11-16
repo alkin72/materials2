@@ -38,6 +38,7 @@ def generate_pdf(request):
             con=contragent_pdf.name
 
     sum = came.aggregate(Sum=Sum('value'))
+    sum.update(Sum=round(sum['Sum'], 2))
     count = came.count()
     data = {'title': 'Отчет по приходу материала',
             'system_info': 'Приход за весь период по датам',
@@ -99,6 +100,7 @@ def expense(request):
             exp = exp.filter(materials=form.cleaned_data['material'])
 
     sum = exp.aggregate(Sum=Sum('value'))
+    sum.update(Sum=round(sum['Sum'], 2))
     count = exp.count()
     data = {'title': 'Отчет по расходу материала',
             'system_info': 'Расход за весь период по датам',
@@ -132,6 +134,7 @@ def came(request):
             came = came.filter(materials=form.cleaned_data['material'])
 
     sum = came.aggregate(Sum=Sum('value'))
+    sum.update(Sum=round(sum['Sum'], 2))
     count = came.count()
     data = {'title': 'Отчет по приходу материала',
             'system_info': 'Приход за весь период по датам',
