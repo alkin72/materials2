@@ -1,9 +1,10 @@
+import datetime
 from itertools import chain
 from operator import attrgetter
 import django
 from django.http import HttpResponse
 from django.shortcuts import render
-from .forms import CameFilterForm
+from .forms import CameFilterForm, ReceiptFilterForm
 from docs.models import *
 from django.db.models import Sum, Count
 from django.template.loader import render_to_string
@@ -14,14 +15,20 @@ max_data = None
 min_data = None
 contragent_pdf = None
 material = None
+title = None
+move = True
 def generate_pdf(request):
     """Создание pdf."""
     # Данные модели
     con = None
-    global material, min_data, max_data, contragent_pdf
-    came = RegisterMaterialsMove.objects.filter(move=True)
-    registrator = Document.objects.filter(category_move=True)
-    material_search = Materials.objects.all()
+    global material, min_data, max_data, contragent_pdf, title, move
+    if move:
+        came = RegisterMaterialsMove.objects.filter(move=True)
+        registrator = Document.objects.filter(category_move=True)
+        material_search = Materials.objects.all()
+    else:
+        came = RegisterMaterialsMove.objects.filter(move=False)
+        registrator = Document.objects.filter(category_move=False)
 
     form = CameFilterForm(request.POST)
     if form.is_valid():
@@ -37,11 +44,14 @@ def generate_pdf(request):
         if contragent_pdf:
             con=contragent_pdf.name
 
-    sum = came.aggregate(Sum=Sum('value'))
-    sum.update(Sum=round(sum['Sum'], 2))
+    sum = came.aggregate(Sum=Sum('value')) # TODO: исключить вариант когда None
+
+    if sum['Sum'] is not None:
+        sum.update(Sum=round(sum['Sum'], 2))
+
     count = came.count()
-    data = {'title': 'Отчет по приходу материала',
-            'system_info': 'Приход за весь период по датам',
+    data = {'title': title,
+            'system_info': 'за весь период по датам',
             'came': came,
             'form': form,
             'sum': sum,
@@ -61,7 +71,8 @@ def generate_pdf(request):
     min_data = None
     max_data = None
     con = None
-
+    title = None
+    move = True
     # Создание http ответа
     response = HttpResponse(content_type='application/pdf;')
     response['Content-Disposition'] = 'inline; filename=list_people.pdf'
@@ -84,25 +95,32 @@ def reports_journal(request):
 
 
 def expense(request):
+
+    global material, min_data, max_data, contragent_pdf, title, move
     exp = RegisterMaterialsMove.objects.filter(move=False)
     registrator = Document.objects.filter(category_move=False)
-
     form = CameFilterForm(request.GET)
     if form.is_valid():
         if form.cleaned_data['min_data']:
+            min_data = form.cleaned_data['min_data']
             exp = exp.filter(datetime__gte=form.cleaned_data['min_data'])
         if form.cleaned_data['max_data']:
+            max_data = form.cleaned_data['max_data']
             exp = exp.filter(datetime__lte=form.cleaned_data['max_data'])
         if form.cleaned_data['contragent']:
+            contragent_pdf = form.cleaned_data['contragent']
             registrator = registrator.filter(contragent=form.cleaned_data['contragent'])
             exp = exp.filter(registrator__in=registrator)
         if form.cleaned_data['material']:
+            material = form.cleaned_data['material']
             exp = exp.filter(materials=form.cleaned_data['material'])
-
-    sum = exp.aggregate(Sum=Sum('value'))
-    sum.update(Sum=round(sum['Sum'], 2))
+    title = 'Отчет по расходу материала'
+    move = False
+    sum = exp.aggregate(Sum=Sum('value')) # TODO: исключить вариант когда None
+    if sum['Sum'] is not None:
+        sum.update(Sum=round(sum['Sum'], 2))
     count = exp.count()
-    data = {'title': 'Отчет по расходу материала',
+    data = {'title': title,
             'system_info': 'Расход за весь период по датам',
             'exp': exp,
             'form': form,
@@ -111,13 +129,42 @@ def expense(request):
             }
     return django.shortcuts.render(request, 'reports/expense.html', data)
 
+def receipt_data(request):
+    # global material, min_data, max_data, contragent_pdf, title
+    lst = []
+    rec= Receipt.objects.all()
+    reg_receipt = RegisterReceipt.objects.all()
+    reg_rec_comp = RegisterReceiptComposition.objects.all()
+    form = ReceiptFilterForm(request.GET)
+    if form.is_valid():
+        if form.cleaned_data['data']:
+            # data = form.cleaned_data['data']
+            reg_receipt = reg_receipt.filter(datetime=form.cleaned_data['data'])
+        if form.cleaned_data['receipt']:
+            # receipt_find = form.cleaned_data['receipt']
+            reg_receipt = reg_receipt.filter(receipt=form.cleaned_data['receipt'])
+            #reg_receipt_get = reg_receipt.get(receipt=form.cleaned_data['receipt'])
+            for i in reg_receipt:
+                lst += reg_rec_comp.filter(register_receipt=i)
+            reg_rec_comp = lst
+            #reg_rec_comp = reg_rec_comp.filter(register_receipt=reg_receipt)
+    title = 'Изменения рецептов по датам'
+    count = reg_receipt.count()
+    data = {'title': title,
+            'system_info': 'за весь месяц',
+            'rec': reg_receipt,
+            'reg': reg_rec_comp,
+            'form': form,
+            'count': count
+            }
+    return django.shortcuts.render(request, 'reports/receipt_data.html', data)
 
 def came(request):
-    global material, min_data, max_data, contragent_pdf
+    global material, min_data, max_data, contragent_pdf, title
     came = RegisterMaterialsMove.objects.filter(move=True)
     registrator = Document.objects.filter(category_move=True)
     material_search = Materials.objects.all()
-    form = CameFilterForm(request.POST)
+    form = CameFilterForm(request.GET)
     if form.is_valid():
         if form.cleaned_data['min_data']:
             min_data = form.cleaned_data['min_data']
@@ -133,10 +180,12 @@ def came(request):
             material = form.cleaned_data['material']
             came = came.filter(materials=form.cleaned_data['material'])
 
-    sum = came.aggregate(Sum=Sum('value'))
-    sum.update(Sum=round(sum['Sum'], 2))
+    title = 'Отчет по приходу материала'
+    sum = came.aggregate(Sum=Sum('value')) # TODO: исключить вариант когда None
+    if sum['Sum'] is not None:
+        sum.update(Sum=round(sum['Sum'], 2))
     count = came.count()
-    data = {'title': 'Отчет по приходу материала',
+    data = {'title': title,
             'system_info': 'Приход за весь период по датам',
             'came': came,
             'form': form,

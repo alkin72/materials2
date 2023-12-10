@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-   <h1> {{title}} </h1>
+   <h1> {% if title == None %}   {% else %} {{title}} {% endif %}  </h1>
 {% endblock %}
 
 {% block head %}
@@ -29,10 +29,10 @@
         <div class="row">
             <div class="col-7">
                 <div class="row"></div>
-                <div class="col">Дата начала: {{ min_data }}</div>
-                <div class="col">Дата конец: {{ max_data }}</div>
-                <div class="col">Контрагент: {{ contragent }}</div>
-                <div class="col">Материал: {{ material }}</div>
+                <div class="col">Дата начала: {% if min_data == None %}   {% else %} {{ min_data }} {% endif %}</div>
+                <div class="col">Дата конец: {% if max_data == None %}   {% else %} {{ max_data }} {% endif %}</div>
+                <div class="col">Контрагент: {% if contragent == None %}   {% else %} {{ contragent }} {% endif %}</div>
+                <div class="col">Материал: {% if material == None %}   {% else %} {{ material }} {% endif %}</div>
             </div>
         </div>
 
@@ -53,18 +53,24 @@
 <br>
 
     <div class="table-responsive">
-        <table width="100%" class="display nowrap table table-md row-border hover compact stripe" id="dt-table" data-page-length="50">
+        <table width="100%" class="display nowrap table table-bordered row-border hover  compact stripe" id="dt-table" data-page-length="50">
             <thead class="table-light">
             <tr class="text-left">
-                <th width="56%">материал</th>
-                <th width="20%">значение</th>
+                <th width="30%">дата</th>
+                <td width="10%"></td>
+                <th width="40%">материал</th>
+                <td width="10%"></td>
+                <th width="10%">значение</th>
             </tr>
             </thead>
             <tbody>
             {% for el in came %}
             <tr>
-                    <td class="td_table">{{ el.materials}}</td>
-                    <td class="td_table">{{ el.value}}</td>
+                    <td class="td_table">{{ el.datetime }}</td>
+                    <td width="10%"></td>
+                    <td class="td_table">{{ el.materials }}</td>
+                    <td width="10%"></td>
+                    <td class="td_table">{{ el.value }}</td>
             </tr>
             {% endfor %}
             </tbody>

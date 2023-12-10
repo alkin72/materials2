@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    {{title}}
+    {{ title }}
 {% endblock %}
 
 {% block head %}
@@ -28,13 +28,9 @@
     <form class="form" action="" method="GET" enctype="multipart/form-data" id="">
         {% csrf_token %}
         <div class="row">
-            <div class="form-group col-md-3 mb-0"> {{ form.min_data|as_crispy_field }}
+            <div class="form-group col-md-3 mb-0"> {{ form.data|as_crispy_field }}
             </div>
-            <div class="form-group col-md-3 mb-0"> {{ form.max_data|as_crispy_field }}
-            </div>
-            <div class="form-group col-md-3 mb-0"> {{ form.contragent|as_crispy_field }}
-            </div>
-            <div class="form-group col-md-3 mb-0"> {{ form.material|as_crispy_field }}
+            <div class="form-group col-md-3 mb-0"> {{ form.receipt|as_crispy_field }}
             </div>
         </div>
 
@@ -62,28 +58,44 @@
         <table width="100%" class="display nowrap table table-md row-border hover compact stripe" id="dt-table" data-page-length="50">
             <thead class="table-light">
             <tr class="text-left">
-                <th hidden></th>
-                <th width="20%">дата</th>
                 <th width="56%">материал</th>
                 <th width="20%">количество</th>
             </tr>
             </thead>
             <tbody>
-            {% for el in came %}
+            {% for el in rec %}
             <tr>
-                    <td class="td_table" hidden>{{ el.register_materials_remainder_id }}</td>
+                    <td class="td_table">{{ el.receipt }}</td>
                     <td class="td_table">{{ el.datetime }}</td>
-                    <td class="td_table">{{ el.materials }}</td>
-                    <td class="td_table">{{ el.value }}</td>
+            </tr>
+            <tr>
+                    <td class="td_table">
+                        <table>
+                            <thead class="table-light">
+                                <tr class="">
+                                    <th width="60%">материал</th>
+                                    <th width="10%">процент</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in reg %}
+                                    <tr>
+                                        {% if i.register_receipt == el %}
+                                        <td class="td_table">{{ i.materials }}</td>
+                                        <td class="td_table">{{ i.value }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
             </tr>
             {% endfor %}
             </tbody>
-            <tfoot>
-        <tr>
-            <th hidden></th>
-            <th>дата</th>
-            <th>материал</th>
-            <th>количество</th>
+            <tfoot class="table-light">
+        <tr class="text-left">
+            <th width="56%">материал</th>
+            <th width="20%">количество</th>
         </tr>
         </tfoot>
         </table>
