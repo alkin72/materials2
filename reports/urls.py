@@ -10,4 +10,5 @@ urlpatterns = [
     path('came/', views.came, name='came'),
     path('pdf/', views.generate_pdf, name='pdf'),
     path('receipt_data/', views.receipt_data, name='receipt_data'),
+    path('pdf_receipt/', views.generate_pdf_rec, name='pdf_receipt'),
 ]

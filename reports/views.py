@@ -17,6 +17,7 @@ contragent_pdf = None
 material = None
 title = None
 move = True
+receipt_find = None
 def generate_pdf(request):
     """Создание pdf."""
     # Данные модели
@@ -61,7 +62,7 @@ def generate_pdf(request):
             'contragent': con,
             'material': material
             }
-    # Обработка шаблона
+    # Обработка шаблон
 
     html_string = render_to_string('reports/pdf.html', data)
     html = HTML(string=html_string)
@@ -94,8 +95,63 @@ def reports_journal(request):
     return render(request, 'reports/reports_journal.html', data)
 
 
-def expense(request):
+def generate_pdf_rec(request):
+    """Создание pdf."""
+    # Данные модели
+    con = None
+    global receipt_find, min_data, max_data, contragent_pdf, title
+    rec = Receipt.objects.all()
+    reg_receipt = RegisterReceipt.objects.all()
+    reg_rec_comp = RegisterReceiptComposition.objects.all()
 
+    form = ReceiptFilterForm(request.GET)
+    if form.is_valid():
+        if min_data:
+            reg_receipt = reg_receipt.filter(datetime__gte=min_data)
+        if max_data:
+            reg_receipt = reg_receipt.filter(datetime__lte=max_data)
+        if receipt_find:
+            reg_receipt = reg_receipt.filter(receipt=receipt_find)
+
+    #sum = came.aggregate(Sum=Sum('value'))  # TODO: исключить вариант когда None
+
+    # if sum['Sum'] is not None:
+    #     sum.update(Sum=round(sum['Sum'], 2))
+
+    # count = came.count()
+    data = {'title': title,
+            'system_info': 'за весь период по датам',
+            # 'came': came,
+            'form': form,
+            # 'sum': sum,
+            # 'count': count,
+            'receipt': receipt_find,
+            'min_data': min_data,
+            'max_data': max_data,
+            'rec_receipt': reg_receipt,
+            'reg': reg_rec_comp,
+            }
+    # Обработка шаблона
+
+    html_string = render_to_string('reports/pdf_receipt.html', data)
+    html = HTML(string=html_string)
+    result = html.write_pdf()
+    min_data = None
+    max_data = None
+    receipt_find = None
+    # Создание http ответа
+    response = HttpResponse(content_type='application/pdf;')
+    response['Content-Disposition'] = 'inline; filename=list_people.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+    return response
+
+
+def expense(request):
     global material, min_data, max_data, contragent_pdf, title, move
     exp = RegisterMaterialsMove.objects.filter(move=False)
     registrator = Document.objects.filter(category_move=False)
@@ -130,18 +186,21 @@ def expense(request):
     return django.shortcuts.render(request, 'reports/expense.html', data)
 
 def receipt_data(request):
-    # global material, min_data, max_data, contragent_pdf, title
+    global receipt_find, min_data, max_data, contragent_pdf, title # TODO: сделать формирование отчета в pdf для правильной работы шаблона pdf
     lst = []
     rec= Receipt.objects.all()
     reg_receipt = RegisterReceipt.objects.all()
     reg_rec_comp = RegisterReceiptComposition.objects.all()
     form = ReceiptFilterForm(request.GET)
     if form.is_valid():
-        if form.cleaned_data['data']:
-            # data = form.cleaned_data['data']
-            reg_receipt = reg_receipt.filter(datetime=form.cleaned_data['data'])
+        if form.cleaned_data['min_data']:
+            min_data = form.cleaned_data['min_data']
+            reg_receipt = reg_receipt.filter(datetime__gte=form.cleaned_data['min_data'])
+        if form.cleaned_data['max_data']:
+            max_data = form.cleaned_data['max_data']
+            reg_receipt = reg_receipt.filter(datetime__lte=form.cleaned_data['max_data'])
         if form.cleaned_data['receipt']:
-            # receipt_find = form.cleaned_data['receipt']
+            receipt_find = form.cleaned_data['receipt']
             reg_receipt = reg_receipt.filter(receipt=form.cleaned_data['receipt'])
             #reg_receipt_get = reg_receipt.get(receipt=form.cleaned_data['receipt'])
             for i in reg_receipt:

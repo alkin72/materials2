@@ -2,6 +2,8 @@ import django.shortcuts
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+
+
 # from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .utils import *
 from django.contrib.auth.decorators import login_required
@@ -24,7 +26,7 @@ class DocsDetailView(DetailView):
     template_name = 'docs/docs_detail.html'
     context_object_name = 'docs_detail'
 
-    # permission_classes = [IsAuthenticated, IsAdminUser]
+    #permission_classes = [IsAuthenticated]
     def get_context_data(self, **kwargs):
         doc = forms.Document.objects.get(doc_id=self.kwargs['pk'])
 

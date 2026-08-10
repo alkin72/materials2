@@ -1,9 +1,8 @@
-{% extends 'main/layout.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
 {% block title %}
-    {{ title }}
+   <h1> {% if title == None %}   {% else %} {{title}} {% endif %}  </h1>
 {% endblock %}
 
 {% block head %}
@@ -20,55 +19,51 @@
 {% endblock%}
 
 {% block cap %}
-    <h2>{{system_info}}</h2>
+    <h3>{{system_info}}</h3>
 {% endblock %}
 
 {% block content %}
 
-    <form class="form" action="" method="GET" enctype="multipart/form-data" id="">
+    <form class="form" action="" method="get" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
-            <div class="form-group col-md-3 mb-0"> {{ form.min_data|as_crispy_field }}
-            </div>
-            <div class="form-group col-md-3 mb-0"> {{ form.max_data|as_crispy_field }}
-            </div>
-            <div class="form-group col-md-3 mb-0"> {{ form.receipt|as_crispy_field }}
+            <div class="col-7">
+                <div class="row"></div>
+                <div class="col">Начальная Дата: {% if min_data == None %}   {% else %} {{ min_data }} {% endif %}</div>
+                <div class="col">Конечная Дата: {% if max_data == None %}   {% else %} {{ max_data }} {% endif %}</div>
+                <div class="col">Рецепт: {% if receipt == None %}  {% else %} {{ receipt }} {% endif %}</div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-4 mb-0">
-                <button class="btn btn-primary btn-block" type="submit" >Применить</button>
-                <a class="btn btn-primary btn-block" onclick="" href="{% url 'pdf_receipt' %}">Сохранить pdf</a>
-
-            </div>
             <div class="col-7">
                 <div class="row">
-                    <div class="col"><h5>Количество записей: {{ count }}</h5></div>
-                    <div class="col"><h5>Сумма материала: {{ sum.Sum }}</h5></div>
+
+
                 </div>
             </div>
         </div>
-
         {{ form.non_field_errors }}
         {{ doc_form.management_form }}
         {{ doc_form.non_form_errors }}
     </form>
-
 <br>
+
     <div class="table-responsive">
-        <table width="100%" class="display nowrap table table-md row-border hover compact stripe" id="dt-table" data-page-length="50">
+        <table width="100%" class="display nowrap table table-bordered row-border hover  compact stripe" id="dt-table" data-page-length="50">
             <thead class="table-light">
             <tr class="text-left">
-                <th width="56%">материал</th>
-                <th width="20%">количество</th>
+                <th width="30%">дата</th>
+                <td width="10%"></td>
+                <th width="40%">рецепт</th>
             </tr>
             </thead>
             <tbody>
-            {% for el in rec %}
+            {% for el in rec_receipt %}
             <tr>
-                    <td class="td_table">{{ el.receipt }}</td>
                     <td class="td_table">{{ el.datetime }}</td>
+                    <td width="10%"></td>
+                    <td class="td_table"><b>{{ el.receipt }}</b></td>
             </tr>
             <tr>
                     <td class="td_table">
@@ -88,17 +83,14 @@
                                         {% endif %}
                                     </tr>
                                 {% endfor %}
+                            <hr>
                             </tbody>
                         </table>
                     </td>
             </tr>
             {% endfor %}
             </tbody>
-            <tfoot class="table-light">
-        <tr class="text-left">
-            <th width="56%">материал</th>
-            <th width="20%">количество</th>
-        </tr>
+            <tfoot>
         </tfoot>
         </table>
     </div>
@@ -113,7 +105,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="{% static 'docs/js/datatable.js' %}"></script>
-    <script>
-
-     </script>
 {% endblock %}
+
+

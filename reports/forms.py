@@ -28,5 +28,9 @@ class CameFilterForm(forms.Form):
     material = ContragentModelChoiceField(required=False, label='Материал', queryset=Materials.objects.all(), widget=Select(attrs={'class': 'form-control'}))
 
 class ReceiptFilterForm(forms.Form):
-    data = forms.DateField(required=False, label='Месяц', widget=MonthPickerInput(attrs={'id': 'datepicker'}, options={"locale": "ru"}))
+    # data = forms.DateField(required=False, label='Месяц', widget=MonthPickerInput(attrs={'id': 'datepicker'}, options={"locale": "ru"}))
+    min_data = forms.DateField(required=False, label='Начальная дата', widget=DatePickerInput(attrs={'id': 'datepicker'}, options={"format": "DD.MM.YYYY",
+                                                                                                                   "locale": "ru"}))
+    max_data = forms.DateField(required=False, label='Конечная дата',
+                               widget=DatePickerInput(attrs={'id': 'datepicker'}, options={"format": "DD.MM.YYYY", "locale": "ru"}))
     receipt = ReceiptModelChoiceField(required=False, label='Рецепт', queryset=Receipt.objects.all(), widget=Select(attrs={'class': 'form-control'}))
