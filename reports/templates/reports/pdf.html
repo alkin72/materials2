@@ -1,48 +1,42 @@
 {% load static %}
 {% load crispy_forms_tags %}
+{% load bootstrap4 %}
 
 {% block title %}
-   <h1> {% if title == None %}   {% else %} {{title}} {% endif %}  </h1>
+   <h1>{% if title %}{{ title }}{% endif %}</h1>
 {% endblock %}
 
 {% block head %}
-    {% load crispy_forms_tags %}
-    {% load bootstrap4 %}
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
     {{ form.media }}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.bootstrap5.min.css">
     <link rel="stylesheet" href="{% static 'reports/css/reports.css' %}">
-{% endblock%}
+{% endblock %}
 
 {% block cap %}
-    <h3>{{system_info}}</h3>
+    <h3>{{ system_info }}</h3>
 {% endblock %}
 
 {% block content %}
-
     <form class="form" action="" method="get" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="col-7">
-                <div class="row"></div>
-                <div class="col">Дата начала: {% if min_data == None %}   {% else %} {{ min_data }} {% endif %}</div>
-                <div class="col">Дата конец: {% if max_data == None %}   {% else %} {{ max_data }} {% endif %}</div>
-                <div class="col">Контрагент: {% if contragent == None %}   {% else %} {{ contragent }} {% endif %}</div>
-                <div class="col">Материал: {% if material == None %}   {% else %} {{ material }} {% endif %}</div>
+                <div class="col">Дата начала: {% if min_data %}{{ min_data }}{% endif %}</div>
+                <div class="col">Дата конец: {% if max_data %}{{ max_data }}{% endif %}</div>
+                <div class="col">Контрагент: {% if contragent %}{{ contragent }}{% endif %}</div>
+                <div class="col">Материал: {% if material %}{{ material }}{% endif %}</div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-7">
                 <div class="row">
-
-                    <div class="col"><h5>Количество записей: {{count}}</h5></div>
-                    <div class="col"><h5>Сумма материала: {{sum.Sum}}</h5></div>
-
+                    <div class="col"><h5>Количество записей: {{ count }}</h5></div>
+                    <div class="col"><h5>Сумма материала: {{ sum.Sum }}</h5></div>
                 </div>
             </div>
         </div>
@@ -50,45 +44,42 @@
         {{ doc_form.management_form }}
         {{ doc_form.non_form_errors }}
     </form>
-<br>
+    <br>
 
     <div class="table-responsive">
-        <table width="100%" class="display nowrap table table-bordered row-border hover  compact stripe" id="dt-table" data-page-length="50">
+        <table width="100%" class="display nowrap table table-bordered row-border hover compact stripe" id="dt-table" data-page-length="50">
             <thead class="table-light">
-            <tr class="text-left">
-                <th width="30%">дата</th>
-                <td width="10%"></td>
-                <th width="40%">материал</th>
-                <td width="10%"></td>
-                <th width="10%">значение</th>
-            </tr>
+                <tr class="text-left">
+                    <th width="30%">дата</th>
+                    <th width="10%"></th>
+                    <th width="40%">материал</th>
+                    <th width="10%"></th>
+                    <th width="10%">значение</th>
+                </tr>
             </thead>
             <tbody>
-            {% for el in came %}
-            <tr>
+                {% for el in came %}
+                <tr>
                     <td class="td_table">{{ el.datetime }}</td>
-                    <td width="10%"></td>
+                    <td></td>
                     <td class="td_table">{{ el.materials }}</td>
-                    <td width="10%"></td>
+                    <td></td>
                     <td class="td_table">{{ el.value }}</td>
-            </tr>
-            {% endfor %}
+                </tr>
+                {% endfor %}
             </tbody>
-            <tfoot>
-        </tfoot>
+            <tfoot></tfoot>
         </table>
     </div>
-
 {% endblock %}
 
 {% block footer %}
-   <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли под - &nbsp  <p class="text-uppercase"> {{ user.username }} </p>
+   <p class="fs-6">Дата сегодня: {% now "j F Y" %}, Вы вошли под — <span class="text-uppercase">{{ user.username }}</span></p>
 {% endblock %}
 
 {% block script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://datatables.net"></script>
     <script src="{% static 'docs/js/datatable.js' %}"></script>
 {% endblock %}
-
-
