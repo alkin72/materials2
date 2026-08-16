@@ -18,15 +18,57 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-# Регистрация кириллического шрифта
+# Регистрация кириллического шрифта--------------------------------------------------------------------------
+fonts_dir = os.path.join(settings.BASE_DIR, 'reports', 'static', 'reports', 'fonts', 'DejaVu Sans')
+
 try:
-    # Учитываем папку "DejaVu Sans" в пути
-    font_path = os.path.join(settings.BASE_DIR, 'reports', 'static', 'reports', 'fonts', 'DejaVu Sans', 'DejaVuSans.ttf')
-    pdfmetrics.registerFont(TTFont('DejaVuSans', font_path))
+    # 1. Регистрация каждого начертания по отдельности
+    pdfmetrics.registerFont(TTFont('DejaVuSans', os.path.join(fonts_dir, 'DejaVuSans.ttf')))
+    pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', os.path.join(fonts_dir, 'DejaVuSans-Bold.ttf')))
+    pdfmetrics.registerFont(TTFont('DejaVuSans-Oblique', os.path.join(fonts_dir, 'DejaVuSans-Oblique.ttf')))
+    pdfmetrics.registerFont(TTFont('DejaVuSans-BoldOblique', os.path.join(fonts_dir, 'DejaVuSans-BoldOblique.ttf')))
+
+    # 2. Объединение начертаний в одно семейство "DejaVuSans"
+    pdfmetrics.registerFontFamily(
+        'DejaVuSans',
+        normal='DejaVuSans',
+        bold='DejaVuSans-Bold',
+        italic='DejaVuSans-Oblique',
+        boldItalic='DejaVuSans-BoldOblique'
+    )
+
     DEFAULT_FONT = 'DejaVuSans'
+
 except Exception as e:
     print(f"Ошибка загрузки шрифта: {e}")
+    # Важно: Helvetica НЕ поддерживает кириллицу по умолчанию в ReportLab
     DEFAULT_FONT = 'Helvetica'
+    #-----------------------------------------------------------------------------------------------------
+
+# Создайте папку 'resources/fonts/' в корне проекта (рядом с manage.py)-----------------------------------
+# Положите туда файлы шрифтов и запуште в Git
+# FONT_DIR = os.path.join(settings.BASE_DIR, 'resources', 'fonts')
+# font_path = os.path.join(FONT_DIR, 'DejaVuSans.ttf')
+#
+# if not os.path.exists(font_path):
+#     # Этот алерт сразу покажет в логах сервера, где именно код ищет шрифт
+#     raise FileNotFoundError(f"Файл шрифта отсутствует на сервере по пути: {font_path}")
+#
+# pdfmetrics.registerFont(TTFont('DejaVuSans', font_path))
+# DEFAULT_FONT = 'DejaVuSans'
+#--------------------------------------------------------------------------------------------------------
+
+# Собираем путь----------------------------------------------------------------------
+# font_path = os.path.join(settings.BASE_DIR, 'reports', 'static', 'reports', 'fonts', 'DejaVu Sans', 'DejaVuSans.ttf')
+#
+# # Временная жесткая проверка прямо в логах/на экране
+# print(f"DEBUG_FONT_PATH: {font_path}")
+# print(f"DEBUG_FILE_EXISTS: {os.path.exists(font_path)}")
+#
+# # Убираем try/except, чтобы увидеть реальный сбой, если он есть
+# pdfmetrics.registerFont(TTFont('DejaVuSans', font_path))
+# DEFAULT_FONT = 'DejaVuSans'
+#-----------------------------------------------------------------------------
 
 max_data = None
 min_data = None

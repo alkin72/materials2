@@ -68,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'materials.middleware.RestrictUnauthenticatedMiddleware',
 ]
 
 ROOT_URLCONF = 'materials.urls'

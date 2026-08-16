@@ -42,3 +42,7 @@ function getTableData(table) {
 
   return dataArray;
 }
+function setTableEvents(table) {
+  // Сюда потом добавишь логику: обработчики кликов, фильтры и т.д.
+  console.log('setTableEvents called', table);
+}
