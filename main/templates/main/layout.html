@@ -23,24 +23,27 @@
             <img id="img" src="{% static 'main/img/logo72.png' %}"  alt="Лого">
                 <span class="logo" id="logo">материалы</span>
                     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                        <div class="btn-group">
-                                <button type="button" class="btn btn-outline dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Работа с документами
-                                </button>
-                                <ul class="dropdown-menu">
-                                <li class="dropdown-item"><a class="me-3 py-2 text-dark text-decoration-none"
-                                    {% if True %}
-                                    href="{% url 'create_detail' %}"
-                                    {% endif %}>
-                                    Документ учета приход-расход</a>
-                                </li>
-                                <li><a class="dropdown-item" href="{% url 'create_detail_receipt' %}">Документ производство рецепт</a></li>
-                                <li><a class="dropdown-item" href="#">Документ работы</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'delete_objects' %}">Удаление помеченных документов</a></li>
-                                <li><a class="dropdown-item" href="{% url 'delete_receipt' %}">Удаление помеченных заявок</a></li>
-                                </ul>
-                        </div>
+<!--                        <div class="btn-group">-->
+<!--                                <button type="button" class="btn btn-outline dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                                Работа с документами-->
+<!--                                </button>-->
+<!--                                <ul class="dropdown-menu">-->
+<!--                                <li class="dropdown-item"><a class="me-3 py-2 text-dark text-decoration-none"-->
+<!--                                    {% if True %}-->
+<!--                                    href="{% url 'create_detail' %}"-->
+<!--                                    {% endif %}>-->
+<!--                                    Документ учета приход-расход</a>-->
+<!--                                </li>-->
+<!--                                <li><a class="dropdown-item" href="{% url 'create_detail_receipt' %}">Документ производство рецепт</a></li>-->
+<!--                                <li><a class="dropdown-item" href="#">Документ работы</a></li>-->
+<!--                                <li><hr class="dropdown-divider"></li>-->
+<!--                                <li><a class="dropdown-item" href="{% url 'delete_objects' %}">Удаление помеченных документов</a></li>-->
+<!--                                <li><a class="dropdown-item" href="{% url 'delete_receipt' %}">Удаление помеченных заявок</a></li>-->
+<!--                                </ul>-->
+<!--                        </div>-->
+
+
+
 <!--                        <div class="btn-group">-->
 <!--                            <button type="button" class="btn btn-online dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
 <!--                                Сервис-->
@@ -49,8 +52,14 @@
 <!--                            <li class="dropdown-item"><a class="me-3 py-2 text-dark text-decoration-none" href="#">Удаление помеченных документов</a></li>-->
 <!--                            </ul>-->
 <!--                        </div>-->
-                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Сохранить</a>
-                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Просмотр</a>
+<!--                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Сохранить</a>-->
+<!--                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Просмотр</a>-->
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'create_detail_receipt' %}">Документ производство
+                            рецепт</a>
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Документ работы</a>
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'delete_objects' %}">Удаление помеченных документов</a>
+                        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'delete_receipt' %}">Удаление помеченных заявок</a>
+
                         {% if not request.user.is_authenticated %}
                         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'register' %}">Регистрация</a>
                         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'login' %}">Вход</a>
