@@ -11,7 +11,7 @@ coreschema==0.0.4
 cryptography==36.0.1
 db==0.1.1
 defusedxml==0.7.1
-Django==4.1
+Django==4.1.13
 django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==21.1
 django-bootstrap5==21.1
