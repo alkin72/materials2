@@ -6,7 +6,8 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
 # from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .utils import *
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import permission_required, login_required
 from django.utils.decorators import method_decorator
 
 
@@ -147,6 +148,8 @@ class DocsReceiptDetailView(DetailView):
 # проверка API===============================================================
 
 
+# @login_required()
+# @permission_required('doc.view_contragents', raise_exception=True)
 def docs_app(request):
     return django.shortcuts.render(request, 'docs/update.html')
 # проверка API===============================================================

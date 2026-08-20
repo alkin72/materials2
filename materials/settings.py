@@ -198,6 +198,15 @@ MESSAGE_TAGS = {
 # Enable WhiteNoise's GZip compression of static assets.
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# Время жизни сессии в секундах после закрытия браузера (если SESSION_EXPIRE_AT_BROWSER_CLOSE = True)
+# Или общее время жизни сессии, если пользователь не закрывает браузер
+SESSION_COOKIE_AGE = 3600  # Например, 1 час (3600 секунд). По умолчанию стоит 1209600 (2 недели)
+
+# Закрывать ли сессию сразу при закрытии браузера
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # True — если хотите, чтобы при закрытии вкладки/браузера выкидывало сразу
+
+
+
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # SIMPLE_JWT = {
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=300),

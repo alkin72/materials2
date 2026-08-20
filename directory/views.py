@@ -1,16 +1,19 @@
 import django
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .forms import *
 from .utils import *
 from . import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import permission_required, login_required
 
 
-# @ login_required()
+
+# @login_required()
+# @permission_required('materials.view_directory', raise_exception=True)
 def directory(request):
     data = {'title': 'Справочники',
             'system_info': 'Дата создания: 25.12.2021 12:00, Контрагент: ООО "", Создан'
@@ -18,15 +21,27 @@ def directory(request):
     return render(request, 'directory/directory.html', data)
 
 
+@login_required()
+#@permission_required('directory.view_contragents')
 def contragents(request):
+    data = {
+        'title': 'Журнал контрагентов',
+        'system_info': 'Дата создания: 25.12.2021 12:00, Контрагент: ООО "", Проведен',
+    }
+
+    # ВАЖНО: Проверьте точное имя вашего приложения вместо 'directory'
+    if not request.user.has_perm('directory.view_contragents'):
+        data['error_message'] = 'У вас нет прав на просмотр журнала контрагентов!'
+        return render(request, 'directory/contragents.html', data)
+
+    # Логика, если права ЕСТЬ
     contr = forms.Contragents.objects.all()
-    data = {'title': 'Журнал контрагентов',
-            'system_info': 'Дата создания: 25.12.2021 12:00, Контрагент: ООО "", Проведен',
-            'contr': contr,
-            }
-    return django.shortcuts.render(request, 'directory/contragents.html', data)
+    data['contr'] = contr
+    return render(request, 'directory/contragents.html', data)
 
 
+@login_required()
+@permission_required('directory.view_materials', raise_exception=True)
 def materials(request):
     mat = forms.Materials.objects.all()
     data = {'title': 'Справочник материалов',
@@ -72,8 +87,9 @@ def receipt(request):
     return django.shortcuts.render(request, 'directory/receipt.html', data)
 
 
-class ContragentsDetailView(UpdateView):
+class ContragentsDetailView(PermissionRequiredMixin, UpdateView):
     # model = Contragents
+    permission_required = 'directory.change_contragents' # Требуется право на изменение
     model = forms.Contragents
     form_class = forms.ContragentForm
     # fields = ('contragents_id', 'name', 'fullname', 'address', 'phone', 'e_mail', 'note')

@@ -9,6 +9,21 @@
 <link rel="stylesheet" href="{% static 'directory/css/directory.css' %}">
 {% endblock %}
 
+<div class="container mt-3">
+    {% if error_message %}
+        <!-- Если прав нет, показываем только ошибку -->
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Доступ ограничен</h4>
+            <p>{{ error_message }}</p>
+        </div>
+    {% else %}
+        <!-- Если права есть, показываем обычный контент -->
+        <h1>{{ title }}</h1>
+        <!-- Ваш существующий код (вывод контрагентов или формы) -->
+    {{ contr }}
+    {% endif %}
+</div>
+
 {% block title %}{{title}}{% endblock %}
 
 {% block cap %}
